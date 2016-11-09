@@ -1,0 +1,10 @@
+import numpy as np
+np.random.seed(seed=1)
+
+class Output_Layer():
+    def __init__(self,num_outputs,num_prev_layer):
+        self.neurons = num_outputs
+        self.num_prev_layer = num_prev_layer
+        self.W = None
+    def initialize_weights(self):
+        self.W = 2*np.random.random((self.num_prev_layer,self.neurons)) - 1
