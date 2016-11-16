@@ -1,7 +1,15 @@
-import copy, numpy as np
-np.random.seed(0)
+import RNN
+import hidden_layer
+import input_layer
+import output_layer
+import numpy as np
+import ActivationFunction
+import copy
 
-# compute sigmoid nonlinearity
+
+
+
+
 def sigmoid(x):
     output = 1/(1+np.exp(-x))
     return output
@@ -66,6 +74,7 @@ for j in range(10000):
 
         # generate input and output
         X = np.array([[a[binary_dim - position - 1],b[binary_dim - position - 1]]])
+
         y = np.array([[c[binary_dim - position - 1]]]).T
 
         # hidden layer (input ~+ prev_hidden)
@@ -124,12 +133,26 @@ for j in range(10000):
             out += x*pow(2,index)
         print str(a_int) + " + " + str(b_int) + " = " + str(out)
         print "------------"
-f = open("weights.txt",'w')
-print>>f,"syn_0\n"
-print>>f,synapse_0
-print>>f,"syn_h\n"
-print>>f,synapse_h
-print>>f,"syn_1\n"
-print>>f,synapse_1
-print>>f,"mem\n"
-print>>f,layer_1_values
+
+
+
+
+
+
+
+
+hid = {1:16}
+inp = np.array([[1,1]])
+af = ActivationFunction.sigmoid
+#self,num_outputs,hidden_layers,non_linearity
+rnn = RNN.RNN(2,1,hid,af)
+rnn.hidden_layers[1].W = synapse_0
+
+rnn.hidden_layers[1].W_rec = synapse_h
+
+rnn.output_layer.W = synapse_1
+
+rnn.hidden_layers[1].memory = layer_1_values
+
+out = rnn.forward_pass(inp)
+print out

@@ -12,11 +12,19 @@ class Hidden_Layer():
         self.memory = list()
         self.initialize_weights()
         self.initialize_memory(num_inputs)
-
+        self.outputs = None
+        self.inputs = None
 
     def initialize_weights(self):
         self.W_rec = 2*np.random.random((self.num_prev_layer,self.neurons)) - 1
         self.W = 2*np.random.random((self.num_prev_layer,self.neurons)) - 1
 
     def initialize_memory(self,num_inputs):
-        self.memory.append(np.zeros(num_inputs,self.neurons))
+        self.memory.append(np.zeros(self.neurons))
+
+
+    def compute(self,inputs):
+        self.inputs = inputs
+        self.outputs = self.nonlinearity(np.dot(inputs,self.W) + np.dot(self.memory[-1],self.W_rec))
+        self.memory.append(self.outputs)
+        return self.outputs

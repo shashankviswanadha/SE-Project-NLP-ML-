@@ -26,3 +26,4 @@ class RNN():
 
     def train(self,inputs,targets):
         for i in range(10000):
+            
