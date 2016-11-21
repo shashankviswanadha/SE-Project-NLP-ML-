@@ -59,6 +59,7 @@ def sigmoid(x,deriv = False):
         return 1.0 / (1.0 + np.exp(-x))
     else:
         #sig = 1.0 / (1.0 + np.exp(-x))
+        #return (sig)*(1-sig)
         return (x)*(1-x)
 
 # tanh
@@ -66,7 +67,7 @@ def tanh(x,deriv = False):
     if not deriv:
         return np.tanh(x)
     else:
-        return 1 - (np.tanh(x)**2)
+        return 1 - ((x)**2)
 
 # Softmax
 def softmax(x,deriv = False):

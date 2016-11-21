@@ -13,7 +13,8 @@ class Output_Layer():
         self.error = None
         self.delta = None
         self.initialize_weights()
-
+        self.avg_er = None
+        self.mse = None
     def initialize_weights(self):
         self.W = 2*np.random.random((self.num_prev_layer,self.neurons)) - 1
 
@@ -23,11 +24,15 @@ class Output_Layer():
         return self.outputs
 
     def backprop(self,targets):
-        self.error = targets - self.outputs#0.5*np.square(targets - self.outputs)#((targets - self.outputs) ** 2).mean(axis=1)
-        #summ = 0
+        self.error =  targets - self.outputs#0.5*np.square(targets - self.outputs)#((targets - self.outputs) ** 2).mean(axis=1) targets - self.outputs
+        summ = 0
+        summ2 = 0
         self.delta = self.error * self.nonlinearity(self.outputs, deriv = True)
         self.W += self.inputs.T.dot(self.delta) * self.learning_rate
-        """for i in range(10000):
-            summ += abs(self.outputs[i][0] - targets[i][0])
-        print summ/10000"""
+        for i in range(len(targets)):
+            for j in range(len(targets[0])):
+                summ2 += (self.outputs[i][j] - targets[i][j])**2
+                summ += abs(self.outputs[i][j] - targets[i][j])
+        self.avg_er = summ/(len(targets) * len(targets[0]))
+        self.mse = summ2/(2*len(targets) * len(targets[0]))
         return (self.delta,self.W)

@@ -3,12 +3,13 @@ from input_layer import *
 from hidden_layer import *
 from output_layer import *
 np.random.seed(seed = 1)
-
+import matplotlib.pyplot as plt
 class ANN():
-    def __init__(self,num_inputs,num_outputs,hidden_layers,non_linearity,learning_rate):
+    def __init__(self,num_inputs,num_outputs,hidden_layers,non_linearity,learning_rate,iterations):
         self.input_layer = Input_Layer(num_inputs);
         self.hidden_layers = {}
         self.learning_rate = learning_rate
+        self.iterations = iterations
         prev = self.input_layer.size
         for key,value in hidden_layers.iteritems():
             self.hidden_layers[key] = Hidden_Layer(non_linearity,value,prev,learning_rate)
@@ -26,11 +27,13 @@ class ANN():
         return current_output
 
     def train(self,inputs,targets):
-        for j in xrange(10000):
+        for j in xrange(self.iterations):
             self.forward_pass(inputs)
             curr_data = self.output_layer.backprop(targets)
             for i in range(self.num_hidden_layers,0,-1):
                 curr_data = self.hidden_layers[i].backprop(curr_data)
-
+            if (j %50 == 0):
+                plt.plot(j,self.output_layer.mse,'ro')
+        plt.show()
         temp = self.forward_pass(inputs)
         return temp
